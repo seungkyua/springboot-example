@@ -3,8 +3,7 @@
 # module dependency
 ## spring-boot version
 - `<parent>`: `spring-boot-starter-parent` and `spring-boot version`
-- `<dependency>`: `spring-boot-starter` without version
-
+- `<dependency>`: `spring-boot-starter-web` without version
 ```
 <parent>
     <groupId>org.springframework.boot</groupId>
@@ -16,7 +15,7 @@
 <dependencies>
     <dependency>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter</artifactId>
+        <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 </dependencies>
 ```
