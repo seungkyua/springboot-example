@@ -49,3 +49,29 @@
 </dependency>
 ```
 
+- `spring-boot-starter-data-jpa`: include <spring-data-commons> which supports pageable
+- `hibernate-validator`: form validator in server side
+- `mysql-connector-java`: connect to mysql
+- `hsqldb`: connect to hsqldb
+```
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>8.0.1.Final</version>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+</dependency>
+<dependency>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <version>2.7.2</version>
+</dependency>
+```
+
