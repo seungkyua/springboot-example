@@ -1,7 +1,6 @@
 package com.ask.example.controller;
 
 import com.ask.example.domain.BadReqeustException;
-import com.ask.example.domain.FileDownloadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

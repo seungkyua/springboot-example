@@ -1,4 +1,4 @@
-package com.ask.example.domain;
+package com.ask.example.controller;
 
 public class FileDownloadException extends RuntimeException {
 

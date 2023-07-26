@@ -1,4 +1,4 @@
-package com.ask.example.domain;
+package com.ask.example.controller;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

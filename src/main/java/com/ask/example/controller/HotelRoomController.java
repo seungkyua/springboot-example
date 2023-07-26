@@ -1,6 +1,6 @@
 package com.ask.example.controller;
 
-import com.ask.example.domain.HotelRoomType;
+import com.ask.example.domain.HotelRoomNumber;
 import com.ask.example.utils.IdGenerator;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,11 +26,15 @@ public class HotelRoomController {
 
     @GetMapping(path = "/hotels/{hotelId}/rooms/{roomNumber}")
     public HotelRoomResponse getHotelRoomByPeriod(
+            ClientInfo clientInfo,
             @PathVariable(value = "hotelId") Long hotelId,
             @PathVariable String roomNumber,
             @RequestParam(value = "fromDate", required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate fromDate,
             @RequestParam(value = "toDate", required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate toDate
             ) {
+
+        System.out.println(clientInfo);
+
         Long hotelRoomId = IdGenerator.create();
         BigDecimal originalPrice = new BigDecimal("130.00");
 
@@ -41,49 +45,22 @@ public class HotelRoomController {
         return response;
     }
 
-    @DeleteMapping(path = "/hotels/{hotelId}/rooms/{roomNumber}")
-    public DeleteResultResponse deleteHotelRoom(
-            @PathVariable Long hotelId,
-            @PathVariable String roomNumber) {
-        System.out.println("Delete Request. hotelId=" + hotelId + ", roomNumber=" + roomNumber);
-        return new DeleteResultResponse(Boolean.TRUE, "success");
-    }
-
-    @PutMapping(path = "/hotels/{hotelId}/rooms/{roomNumber}")
-    public ResponseEntity<HotelRoomIdResponse> updateHotelRoomByRoomNumber(
-            @PathVariable Long hotelId,
-            @PathVariable String roomNumber,
-            @Valid @RequestBody HotelRoomUpdateRequest hotelRoomUpdateRequest,
-            BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            FieldError fieldError = bindingResult.getFieldError();
-            String errorMessage = new StringBuilder("validation error.")
-                    .append(" field: ").append(fieldError.getField())
-                    .append(", code: ").append(fieldError.getCode())
-                    .append(", message: ").append(fieldError.getDefaultMessage())
-                    .toString();
-
-            System.out.println(errorMessage);
-            return ResponseEntity.badRequest().build();
-        }
-
-        System.out.println(hotelRoomUpdateRequest.toString());
-        HotelRoomIdResponse body = HotelRoomIdResponse.from(1_002_003_004L);
-        return ResponseEntity.ok(body);
-    }
-
-    @PostMapping(path = "/hotels/{hotelId}/rooms")
-    public ResponseEntity<HotelRoomIdResponse> createHotelRoom(
-            @PathVariable Long hotelId,
-            @RequestBody HotelRoomRequest hotelRoomRequest
-    ) {
-        System.out.println(hotelRoomRequest.toString());
-
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add(HEADER_CREATED_AT, DATE_FORMATTER.format(ZonedDateTime.now()));
-        HotelRoomIdResponse body = HotelRoomIdResponse.from(1_002_003_004L);
-
-        return new ResponseEntity<HotelRoomIdResponse>(body, headers, HttpStatus.OK);
-    }
+//    // HotelRoomNumber binding example
+//    @GetMapping(path = "/hotels/{hotelId}/rooms/{roomNumber}")
+//    public HotelRoomResponse getHotelRoomByPeriod(
+//            @PathVariable Long hotelId,
+//            @PathVariable HotelRoomNumber roomNumber,
+//            @RequestParam(value = "fromDate", required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate fromDate,
+//            @RequestParam(value = "toDate", required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate toDate
+//            ) {
+//
+//        Long hotelRoomId = IdGenerator.create();
+//        BigDecimal originalPrice = new BigDecimal("130.00");
+//
+//        HotelRoomResponse response = HotelRoomResponse.of(hotelRoomId, roomNumber.toString(), HotelRoomType.DOUBLE, originalPrice);
+//        if (Objects.nonNull(fromDate) && Objects.nonNull(toDate))
+//            fromDate.datesUntil(toDate.plusDays(1)).forEach(date -> response.reservedAt(date));
+//
+//        return response;
+//    }
 }

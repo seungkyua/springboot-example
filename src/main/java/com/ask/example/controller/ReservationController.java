@@ -1,8 +1,5 @@
 package com.ask.example.controller;
 
-import com.ask.example.domain.FileDownloadException;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;

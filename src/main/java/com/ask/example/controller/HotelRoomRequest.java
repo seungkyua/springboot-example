@@ -1,6 +1,5 @@
 package com.ask.example.controller;
 
-import com.ask.example.domain.HotelRoomType;
 import lombok.Getter;
 import lombok.ToString;
 

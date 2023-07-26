@@ -1,6 +1,5 @@
 package com.ask.example.controller;
 
-import com.ask.example.domain.HotelRoomType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

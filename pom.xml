@@ -15,62 +15,90 @@
     </properties>
 
     <parent>
+        <!-- Spring Boot 버전 -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <dependencies>
         <dependency>
+            <!-- Spring Boot 에서 WebMvc 를 사용 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <!-- 개발 시에 Live Reload / Automatic Restart 등을 지원 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
+            <!-- yaml / properties 파일에서 사용하는 Configuration 자동 완성 기능 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
+            <!-- Getter/Setter 를 자동 생성 -->
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
+            <!-- Spring Boot 의 테스트 코드 작성 가능하게 지원 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- JPA 데이터 저장소에 필요, Pageable 과 같은 Web support 기능 (Pageable 은 데이터 쿼리와 관련 있으므로) -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
+            <!-- JSR-303 Java Bean 데이터 검증 (null check, data length 등) -->
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>8.0.1.Final</version>
         </dependency>
         <dependency>
+            <!-- JPA 에서 mysql 접속 driver -->
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
         <dependency>
+            <!-- JPA 에서 hsqldb 접속 driver -->
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.7.2</version>
+        </dependency>
+        <!-- Servlet / ServletFilter 을 사용하기 위해 -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+        <dependency>
+            <!-- Application 정보 모니터링 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <!-- WebMvcAutoConfiguration 에서 사용 -->
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.15.2</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <!-- maven 으로 spring jar/war 파일 패키징 -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>

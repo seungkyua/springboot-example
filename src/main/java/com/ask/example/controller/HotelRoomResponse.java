@@ -1,7 +1,6 @@
 package com.ask.example.controller;
 
 import com.ask.example.controller.serializer.ToDollarStringSerializer;
-import com.ask.example.domain.HotelRoomType;
 import com.ask.example.utils.IdGenerator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
