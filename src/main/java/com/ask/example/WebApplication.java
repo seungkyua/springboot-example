@@ -2,9 +2,11 @@ package com.ask.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
+@ConfigurationPropertiesScan("com.ask.example")
 public class WebApplication {
 
     public static void main(String[] args) {

@@ -105,3 +105,21 @@
     <version>2.15.2</version>
 </dependency>
 ```
+
+
+## Reading properties
+```shell
+java -jar ./application.jar --spring.config.location=file:./application.properties
+```
+```shell
+java -jar ./application.jar -Dspring.profiles.active=dev
+```
+```shell
+export spring_profiles_active
+java -jar ./application.jar
+```
+
+## Execute application
+```shell
+nohup java -Xms1024m -Xms1024m -XX:+UseG1GC -jar ./application.jar > server.out 2>&1 &
+```
