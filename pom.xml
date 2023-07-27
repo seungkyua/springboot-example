@@ -29,6 +29,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <!-- Spring Boot 에서 사용하는 snakeyaml 1.x 의 취약점 때문에 2.0 으로 버전 업그레이드 -->
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
             <!-- 개발 시에 Live Reload / Automatic Restart 등을 지원 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -88,7 +94,7 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
-            <!-- WebMvcAutoConfiguration 에서 사용 -->
+            <!-- WebMvcAutoConfiguration 에서 Resolver 연결에 사용 -->
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>2.15.2</version>

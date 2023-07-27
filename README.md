@@ -4,6 +4,7 @@
 ## spring-boot version
 - `<parent>`: `spring-boot-starter-parent` and `spring-boot version`
 - `<dependency>`: `spring-boot-starter-web` without version
+- `<dependency>`: `snakeyaml` for vulnerability
 ```
 <parent>
     <groupId>org.springframework.boot</groupId>
@@ -14,8 +15,15 @@
 
 <dependencies>
     <dependency>
+        <!-- Spring Boot WebMvc -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <!-- Spring Boot 에서 사용하는 snakeyaml 1.x 의 취약점 때문에 2.0 으로 버전 업그레이드 -->
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>2.0</version>
     </dependency>
 </dependencies>
 ```
@@ -75,3 +83,25 @@
 </dependency>
 ```
 
+- `jakarta.servlet-api`: servlet and servlet filter from spring boot 3.0 (no more javax)
+- `spring-boot-starter-actuator`: an information of application (e.q. Spring Bean lists)
+- `jackson-dataformat-xml`: find resolver in WebMvcAutoConfiguration
+```
+<dependency>
+    <!-- Servlet / ServletFilter 을 사용하기 위해 -->
+    <groupId>jakarta.servlet</groupId>
+    <artifactId>jakarta.servlet-api</artifactId>
+    <version>6.0.0</version>
+</dependency>
+<dependency>
+    <!-- Application 정보 모니터링 -->
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <!-- WebMvcAutoConfiguration 에서 Resolver 연결에 사용 -->
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-xml</artifactId>
+    <version>2.15.2</version>
+</dependency>
+```
