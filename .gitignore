@@ -39,3 +39,6 @@ build/
 
 ### logs directory ###
 logs/
+
+### upload_files directory ###
+upload_files/

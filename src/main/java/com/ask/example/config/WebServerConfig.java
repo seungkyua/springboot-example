@@ -11,6 +11,7 @@ import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConve
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
@@ -54,17 +55,25 @@ public class WebServerConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean<CharacterEncodingFilter> defaultCharacterEncodingFilter() {
+    public FilterRegistrationBean<CharacterEncodingFilter> encodingFilter() {
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
-        encodingFilter.setEncoding("utf-8");
+        encodingFilter.setEncoding("UTF-8");
         encodingFilter.setForceEncoding(true);
 
-        FilterRegistrationBean<CharacterEncodingFilter> filterBean = new FilterRegistrationBean<>();
-        filterBean.setFilter(encodingFilter);
-        filterBean.addInitParameter("paramName", "paramValue");
-        filterBean.addUrlPatterns("*");
-        filterBean.setOrder(1);
-        return filterBean;
+        FilterRegistrationBean<CharacterEncodingFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(encodingFilter);
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(Integer.MIN_VALUE);
+        return registrationBean;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("ahnseungkyu.com")
+                .allowedMethods("GET", "POST", "PUT", "PATCH")
+                .allowedHeaders("*")
+                .maxAge(60 * 60 * 24);
     }
 
 }
