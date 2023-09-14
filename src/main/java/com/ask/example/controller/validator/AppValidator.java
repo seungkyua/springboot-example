@@ -22,11 +22,11 @@ public class AppValidator implements Validator {
             return;
         }
 
-        if (request.getAppName().length() < 1 || request.getAppName().length() > 10) {
+        if (request.getAppName().length() < 1 || request.getAppName().length() > 100) {
             errors.rejectValue(
                     "appName",
                     "LengthError",
-                    "appName's length must be between 1 to 10");
+                    "appName's length must be between 1 to 100");
         }
 
     }

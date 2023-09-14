@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 public class AppRequest {
 
 //    @NotNull(message = "appName can't be null")
-//    @Length(min = 1, max = 10, message = "appName's length must be between 1 to 100")
+//    @Length(min = 1, max = 10, message = "appName's length must be between 1 and 10")
     private String appName;
 
     public Long createApp(String appName) {

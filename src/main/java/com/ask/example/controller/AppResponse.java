@@ -1,5 +1,6 @@
 package com.ask.example.controller;
 
+import com.ask.example.domain.App;
 import com.ask.example.utils.IdGenerator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,17 +15,20 @@ import java.util.List;
 @Getter
 public class AppResponse implements CommonResponseInterface {
 
+    public static final AppResponse EMPTY = new AppResponse();
+
     @JsonProperty("id")
     @JsonSerialize(using = ToStringSerializer.class)
-    private final Long appId;
+    private Long appId;
 
-    private final String appName;
+    private String appName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-    private final List<AppResponse.Task> tasks;
+    private List<AppResponse.Task> tasks;
 
+    public AppResponse() {}
     public AppResponse(Long appId, String appName, LocalDateTime createdAt) {
         this.appId = appId;
         this.appName = appName;
@@ -32,10 +36,16 @@ public class AppResponse implements CommonResponseInterface {
         this.tasks = new ArrayList<>();
     }
 
-    public static AppResponse createAppResponse(Long appId, String appName) {
-        AppResponse appResponse = new AppResponse(appId, appName, LocalDateTime.now());
-        appResponse.addTask("v1", LocalDateTime.now());
-        appResponse.addTask("v2", LocalDateTime.now());
+    public static AppResponse of(App app) {
+        AppResponse appResponse = new AppResponse();
+        appResponse.appId = app.getAppId();
+        appResponse.appName = app.getAppName();
+        appResponse.createdAt = app.getCreatedAt().toLocalDateTime();
+
+
+//        AppResponse appResponse = new AppResponse(appId, appName, LocalDateTime.now());
+//        appResponse.addTask("v1", LocalDateTime.now());
+//        appResponse.addTask("v2", LocalDateTime.now());
         return appResponse;
     }
 

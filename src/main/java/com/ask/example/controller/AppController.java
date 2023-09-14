@@ -2,6 +2,7 @@ package com.ask.example.controller;
 
 import com.ask.example.controller.validator.AppValidator;
 import com.ask.example.domain.BadRequestException;
+import com.ask.example.service.AppService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
@@ -31,13 +33,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Slf4j
 @RestController
 public class AppController {
+
+    private final AppService appService;
+
+    public AppController(AppService appService) {
+        this.appService = appService;
+    }
 
     @InitBinder
     void initBinder(WebDataBinder binder) {
@@ -68,11 +75,9 @@ public class AppController {
     }
 
     @GetMapping(path = "/apps/{appId}")
-//    public ResponseEntity<AppResponse> getApps(
-    public ResponseEntity<CommonResponse> getApps(
+    public ResponseEntity<AppResponse> getAppById(
             ClientInfo clientInfo,
-            @PathVariable(value = "appId") Long appId,
-            @RequestParam(value = "appName") String appName) {
+            @PathVariable(value = "appId") Long appId) {
 
         System.out.println(clientInfo);
 
@@ -82,18 +87,78 @@ public class AppController {
         headers.add("Custom-Header", "value1");
         headers.add("Custom-Header", "value2");
 
-//        return new ResponseEntity<>(
-//                AppResponse.createAppResponse(appId, appName),
-//                headers,
-//                HttpStatus.OK);
-          return new ResponseEntity<>(
-                new CommonResponse(AppResponse.createAppResponse(appId, appName)),
+        return new ResponseEntity<>(
+                appService.getAppById(appId),
                 headers,
                 HttpStatus.OK);
-//        return new ResponseEntity<>(
-//                new CommonResponse(null),
-//                headers,
-//                HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/apps")
+    public ResponseEntity<List<AppResponse>> getAppsByAppName(
+            @Nullable @RequestParam(value = "appName") String appName,
+            @Nullable @RequestParam(value = "query") String query,
+            @Nullable @RequestParam(value = "orderBy") String orderBy) {
+
+        List<AppResponse> appResponses;
+        Boolean asc;
+        if (Objects.isNull(orderBy) || orderBy.equalsIgnoreCase("asc")) {
+            asc = Boolean.TRUE;
+        } else if (orderBy.equalsIgnoreCase("desc")){
+            asc = Boolean.FALSE;
+        } else {
+            asc = Boolean.TRUE;
+        }
+
+        if (Objects.isNull(appName)) {
+            appResponses = appService.getAppAll(asc);
+        } else {
+            if (Objects.isNull(query) || query.equalsIgnoreCase("like")) {
+                appResponses = appService.findByAppNameLikeIgnoreCaseOrderByCreatedAt("%" + appName + "%", asc);
+            } else if (query.equalsIgnoreCase("startswith")) {
+                appResponses = appService.getAppByStartsWithAppName(appName);
+            } else if (query.equalsIgnoreCase("exact")) {
+                appResponses = appService.getAppsByAppName(appName);
+            } else {
+                appResponses = List.of();
+            }
+        }
+
+        return new ResponseEntity<>(
+                appResponses,
+                HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/apps/pageable")
+    public ResponseEntity<List<AppResponse>> findByAppNameUsingExample(
+            @Nullable @RequestParam(value = "appName") String appName,
+            @Nullable @RequestParam(value = "orderBy") String orderBy,
+            @Nullable @RequestParam(value = "pageSize") int pageSize,
+            @Nullable @RequestParam(value = "currentPage") int currentPage) {
+
+        log.info("/apps/pageable called");
+        log.info("appName = {}", appName);
+
+        Boolean asc;
+        if (Objects.isNull(orderBy) || orderBy.equalsIgnoreCase("asc")) {
+            asc = Boolean.TRUE;
+        } else if (orderBy.equalsIgnoreCase("desc")){
+            asc = Boolean.FALSE;
+        } else {
+            asc = Boolean.TRUE;
+        }
+
+        return new ResponseEntity<>(
+                appService.findByAppNameUsingExample(appName, asc, pageSize, currentPage),
+                HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/apps/count")
+    public ResponseEntity<String> getCountByStartsWithAppName(
+            @RequestParam(value = "appName") String appName) {
+
+        return new ResponseEntity<>(
+                appService.getCountByStartsWithAppName(appName).toString(),
+                HttpStatus.OK);
     }
 
     @GetMapping(path = "/apps/{appId}/tasks/{taskId}")
@@ -111,7 +176,7 @@ public class AppController {
     }
 
     @PostMapping(path = "/apps")
-    public ResponseEntity<String> createApps(
+    public ResponseEntity<?> createApps(
             @RequestHeader Map<String, String> requestHeaders,
             @Valid @RequestBody AppRequest appRequest,
             BindingResult bindingResult
@@ -142,7 +207,7 @@ public class AppController {
 //        });
 
         return new ResponseEntity<>(
-                appRequest.createApp(appRequest.getAppName()).toString(),
+                appService.createApp(appRequest),
                 headers,
                 HttpStatus.CREATED);
     }
